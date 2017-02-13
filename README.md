@@ -2,11 +2,11 @@
 This is a repository with my configuration files 
 
 ## Vim
-![alt text](myimage.png "Logo Title Text 1")
+![Vim Print](myimage.png "Vim Print")
 
 To use my configurations for Vim you have to do the following steps:  
 
-Before you start doing this, you'll need download the [Nerd Font][font-install].
+Before you start doing this, you'll need Install the [Nerd Font][font-install].
 
     1. Clone this repository to your machine with:  
     > git clone https://github.com/nivaldogmelo/dotfiles.git  
