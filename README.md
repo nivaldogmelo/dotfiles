@@ -6,16 +6,16 @@ This is a repository with my configuration files
 
 To use my configurations for Vim you have to do the following steps:  
 
-    Before you start doing this, you'll need download the [Nerd Font][font-install].
+Before you start doing this, you'll need download the [Nerd Font][font-install].
 
     1. Clone this repository to your machine with:  
     > git clone https://github.com/nivaldogmelo/dotfiles.git  
 
-    2. Copy the */vim/colors/soft-theme.vim* to your *.vim/colors/* (if it doesn't exist, create one)
+    2. Copy the /vim/colors/soft-theme.vim to your  .vim/colors/  (if it doesn't exist, create one)
     
-    3. Copy the */vim/.vimrc* to your *~/* (If you already have one, just add the content to your .vimrc, making necessary changes)
+    3. Copy the /vim/.vimrc to your ~/ (If you already have one, just add the content to your .vimrc, making necessary changes)
 
-    4. Open vim and run *:PluginInstall*
+    4. Open vim and run :PluginInstall
 
     5. Enjoy
     
