@@ -4,20 +4,18 @@ This is a repository with my configuration files
 ## Vim
 ![Vim Print](myimage.png "Vim Print")
 
-To use my configurations for Vim you have to do the following steps:  
+### To use my configurations for Vim you have to do the following steps:  
 
 Before you start doing this, you'll need Install the [Nerd Font][font-install].
 
-    1. Clone this repository to your machine with:  
-    > git clone https://github.com/nivaldogmelo/dotfiles.git  
-
-    2. Copy the /vim/colors/soft-theme.vim to your  .vim/colors/  (if it doesn't exist, create one)
+1. Download the *soft-theme.vim* from the repository and put on your *.vim/colors/*  (if it doesn't exist, create one)
     
-    3. Copy the /vim/.vimrc to your ~/ (If you already have one, just add the content to your .vimrc, making necessary changes)
+2. Download the *.vimrc* from the reposiroty and put on your *~/* (If you already have one, just add the content to your .vimrc, making necessary changes)
 
-    4. Open vim and run :PluginInstall
+3. Open vim and run
+    >:PluginInstall
 
-    5. Enjoy
+4. Enjoy
     
 
-[font-install]: https://github.com/ryanoasis/nerd-fonts#font-installation
+[font-install]: https://github.com/ryanoasis/nerd-fonts#font-installation1
