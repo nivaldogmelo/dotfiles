@@ -30,10 +30,12 @@ map <F2> :w<cr>
 set laststatus=2              
 
 " --------------------------------------
-" Set automatic expansion of parenthesis/brackets
-inoremap ( ()<esc>:call BC_AddChar(")")<cr>i
-inoremap { {}<esc>:call BC_AddChar("}")<cr>i
-inoremap [ []<esc>:call BC_AddChar("]")<cr>i
+" Set automatic expansion of parenthesis/brackets/etc"
+ino " ""<left>
+ino ' ''<left>
+ino ( ()<left>
+ino [ []<left>
+ino { {}<left>
 
 " Open file on the last edition
 autocmd BufReadPost *
