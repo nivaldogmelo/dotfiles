@@ -10,7 +10,7 @@ Before you start doing this, you'll need Install the [Nerd Font][font-install].
 
 1. Download the *[soft-theme]* from the repository and put on your *.vim/colors/*  (if it doesn't exist, create one)
     
-2. Download the *[vimrc]* from the reposiroty and put on your *~/* (If you already have one, just add the content to your .vimrc, making necessary changes)
+2. Download the *[vimrc]* from the repository and put on your *~/* (If you already have one, just add the content to your .vimrc, making necessary changes)
 
 3. Open vim and run
     >:PluginInstall
