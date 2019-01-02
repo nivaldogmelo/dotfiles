@@ -76,6 +76,9 @@ Plugin 'vim-airline/vim-airline'
 " Git Wrapper
 Plugin 'tpope/vim-fugitive'
 
+" Wakatime
+Plugin 'wakatime/vim-wakatime'
+
 " All plugins must be added before the following line
 call vundle#end()
 filetype plugin indent on
