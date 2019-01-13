@@ -117,3 +117,4 @@ autocmd FileType yaml setl indentkeys-=<:>"
 au BufNewFile,BufRead Jenkinsfile setf groovy
 au BufNewFile,BufRead Jenkinsfile-test setf groovy
 au BufNewFile,BufRead Jenkinsfile-staging setf groovy
+au BufNewFile,BufRead Jenkinsfile-default setf groovy
