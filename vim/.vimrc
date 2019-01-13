@@ -109,3 +109,11 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Yaml file handling
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+filetype plugin indent on
+autocmd FileType yaml setl indentkeys-=<:>"
+au BufNewFile,BufRead Jenkinsfile setf groovy
+au BufNewFile,BufRead Jenkinsfile-test setf groovy
+au BufNewFile,BufRead Jenkinsfile-staging setf groovy
