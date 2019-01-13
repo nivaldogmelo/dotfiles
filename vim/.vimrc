@@ -34,6 +34,19 @@ map <F2> :w<cr>
 " Enable Statusbar
 set laststatus=2
 
+" Setting folding
+inoremap <F9> <C-O>za
+nnoremap <F9> za
+onoremap <F9> <C-C>za
+vnoremap <F9> zf
+set foldmethod:marker
+set foldmarker={,}
+set foldlevelstart=99
+set foldlevel=99
+highlight Folded ctermbg=Black ctermfg=Green
+
+
+
 " Set automatic expansion of parenthesis/brackets/etc
 ino " ""<left>
 ino ' ''<left>
