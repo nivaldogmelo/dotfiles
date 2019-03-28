@@ -30,6 +30,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 map <F2> :w<cr>
+nmap oo o<Esc>k
 
 " Enable Statusbar
 set laststatus=2
