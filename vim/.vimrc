@@ -12,14 +12,23 @@ set hlsearch		" Highlight all search results
 set incsearch		" Highlight search whyle typing
 set ignorecase		" Always ignore case-sensitive
 set expandtab		" Use spaces instead of tabs
-set shiftwidth=4	" Number of auto-ident spaces
+set shiftwidth=2	" Number of auto-ident spaces
 set smartindent		" Enable smart-ident
-set softtabstop=4	" Number of spaces per tab
+set softtabstop=2	" Number of spaces per tab
 set showcmd		" Show commands entered in the file
 set cul			" Show current line
+set textwidth=80        " For the cursor onto a new line after 80 characters
+"set colorcolumn=+1      " Show when you're approaching 80 char
+
+" Colorcolumn style
+"highlight ColorColumn ctermbg=DarkGreen
+"let &colorcolumn=join(range(81,999),",")
 
 " Enable syntax highlight
 syntax on
+
+" Confs for git
+autocmd FileType gitcommit set textwidth=72
 
 " Enable mouse
 set mouse=a
@@ -78,17 +87,8 @@ call vundle#begin()
 " Let Vundle manage Vundle
 Plugin 'VundleVim/Vundle.vim'
 
-" Autocomplete
-Plugin 'Valloric/YouCompleteMe'
-
-" Syntax checker
-Plugin 'scrooloose/syntastic'
-
 " Status bar
 Plugin 'vim-airline/vim-airline'
-
-" Git Wrapper
-Plugin 'tpope/vim-fugitive'
 
 " Wakatime
 Plugin 'wakatime/vim-wakatime'
@@ -96,20 +96,6 @@ Plugin 'wakatime/vim-wakatime'
 " All plugins must be added before the following line
 call vundle#end()
 filetype plugin indent on
-
-" Set python2 server for YCM
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
-" Do not display Scratch window
-set completeopt-=preview
-
-" Syntastic Confs
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " Yaml file handling
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
