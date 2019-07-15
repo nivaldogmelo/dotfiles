@@ -237,7 +237,14 @@
 ;; Install Kubernetes-el
 (use-package kubernetes
   :ensure t
-  :commands (kubernetes-overview))
+  :commands (kubernetes-overview)
+  :bind
+  (:map global-map
+	("C-c k o" . kubernetes-overview)
+	("C-c k n" . kubernetes-set-namespace)
+	("C-c k d p" . kubernetes-describe-pod)
+	("C-c k e" . kubernetes-exec-into)
+	("C-c k l" . kubernetes-logs-follow)))
 
 ;; Install docker-el
 (use-package docker
@@ -259,13 +266,13 @@
   :ensure t
   :bind
   (:map global-map
-  ("C-c g s" . magit-status)
-  ("C-c g a" . magit-stage)
-  ("C-c g C-a" . magit-unstage-file)
-  ("C-c g r" . magit-unstage-all)
-  ("C-c g l" . magit-log-current)
-  ("C-c g c" . magit-commit-create)
-  ("C-c g f" . magit-fetch-all)
-  ("C-c g p" . magit-pull-from-upstream)
-  ("C-c g b" . magit-branch)
-  ("C-c g o" . magit-push)))
+	("C-c g s" . magit-status)
+	("C-c g a" . magit-stage)
+	("C-c g C-a" . magit-unstage-file)
+	("C-c g r" . magit-unstage-all)
+	("C-c g l" . magit-log-current)
+	("C-c g c" . magit-commit-create)
+	("C-c g f" . magit-fetch-all)
+	("C-c g p" . magit-pull-from-upstream)
+	("C-c g b" . magit-branch)
+	("C-c g o" . magit-push)))
