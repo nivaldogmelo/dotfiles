@@ -252,4 +252,20 @@
   (parrot-set-parrot-type 'default)
   :bind
     (:map global-map
-      ("C-c r" . parrot-start-animation)))
+	  ("C-c p" . parrot-start-animation)))
+
+;; Git integration
+(use-package magit
+  :ensure t
+  :bind
+  (:map global-map
+  ("C-c g s" . magit-status)
+  ("C-c g a" . magit-stage)
+  ("C-c g C-a" . magit-unstage-file)
+  ("C-c g r" . magit-unstage-all)
+  ("C-c g l" . magit-log-current)
+  ("C-c g c" . magit-commit-create)
+  ("C-c g f" . magit-fetch-all)
+  ("C-c g p" . magit-pull-from-upstream)
+  ("C-c g b" . magit-branch)
+  ("C-c g o" . magit-push)))
