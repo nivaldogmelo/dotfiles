@@ -10,9 +10,10 @@
    (quote
     ("2540689fd0bc5d74c4682764ff6c94057ba8061a98be5dd21116bf7bf301acfb" default)))
  '(fci-rule-color "#14151E")
+ '(jdee-server-dir "/home/nivaldogmelo/.emacs.d/jdee-server")
  '(package-selected-packages
    (quote
-    (parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
+    (jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -63,8 +64,6 @@
             (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 
-(load (expand-file-name "~/.quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
 ;; Enable line numbers
 (global-linum-mode 1)
 ;; Mapping to navigate between windows
@@ -120,6 +119,15 @@
         (set-window-buffer (next-window) next-win-buffer)
         (select-window first-win)
         (if this-win-2nd (other-window 1))))))
+
+;; Emacs get environment variables from host
+(use-package exec-path-from-shell
+  :ensure t)
+(exec-path-from-shell-initialize)
+
+;; Install all-the-icons
+(use-package all-the-icons
+  :ensure t)
 
 ;; Install projectile
 (use-package projectile
@@ -276,3 +284,29 @@
 	("C-c g p" . magit-pull-from-upstream)
 	("C-c g b" . magit-branch)
 	("C-c g o" . magit-push)))
+
+;; Autocomplete
+(use-package auto-complete
+  :ensure t)
+(use-package popup
+  :ensure t)
+
+;; Yaml integration
+(use-package yaml-mode
+  :ensure t)
+
+;; Golang integration
+(use-package go-mode
+  :ensure t)
+(use-package go-complete
+  :ensure t)
+(exec-path-from-shell-copy-env "GOPATH")
+(add-hook 'completion-at-point-functions 'go-complete-at-point)
+(add-to-list 'load-path "/home/nivaldogmelo/.emacs.d/custom-libs")
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; Java integration
+(use-package jdee
+  :ensure t)
