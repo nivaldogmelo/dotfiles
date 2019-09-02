@@ -13,7 +13,7 @@
  '(jdee-server-dir "/home/nivaldogmelo/.emacs.d/jdee-server")
  '(package-selected-packages
    (quote
-    (jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
+    (grip-mode markdown-mode terraform-mode jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -295,6 +295,10 @@
 (use-package yaml-mode
   :ensure t)
 
+;; Terraform integration
+(use-package terraform-mode
+  :ensure t)
+
 ;; Golang integration
 (use-package go-mode
   :ensure t)
@@ -310,3 +314,11 @@
 ;; Java integration
 (use-package jdee
   :ensure t)
+
+;; Markdown integration
+(use-package markdown-mode
+  :ensure t)
+
+(use-package grip-mode
+  :ensure t
+  :hook ((markdown-mode org-mode) . grip-mode))
