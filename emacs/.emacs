@@ -291,6 +291,9 @@
 (use-package popup
   :ensure t)
 
+;; Start Company-mode
+(add-hook 'after-init-hook 'global-company-mode)
+
 ;; Yaml integration
 (use-package yaml-mode
   :ensure t)
@@ -298,6 +301,9 @@
 ;; Terraform integration
 (use-package terraform-mode
   :ensure t)
+(use-package company-terraform
+  :ensure t)
+(company-terraform-init)
 
 ;; Golang integration
 (use-package go-mode
