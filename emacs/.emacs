@@ -75,6 +75,8 @@
 (setq split-width-threshold 1)
 ;; Set bind to change window split
 (global-set-key (kbd "C-x |") 'toggle-window-split)
+;; Block comment                                                                                                                                              
+(global-set-key (kbd "C-c C-c") 'comment-region)
 
 (global-wakatime-mode)
 
