@@ -13,7 +13,7 @@
  '(jdee-server-dir "/home/nivaldogmelo/.emacs.d/jdee-server")
  '(package-selected-packages
    (quote
-    (grip-mode markdown-mode terraform-mode jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
+    (groovy-mode ac-html web-mode company-terraform company-go company grip-mode markdown-mode terraform-mode jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -75,6 +75,12 @@
 (setq split-width-threshold 1)
 ;; Set bind to change window split
 (global-set-key (kbd "C-x |") 'toggle-window-split)
+;; Change tabs to spaces
+(setq indent-tabs-mode nil)
+;; Auto-refresh bufffers
+(global-auto-revert-mode t)
+;; Uncomment region
+(global-set-key (kbd "C-;") 'comment-dwim)
 
 (global-wakatime-mode)
 
@@ -135,8 +141,12 @@
   :bind
     (:map global-map
       ("C-x a" . projectile-add-known-project)
-      ("C-x r" . projectile-remove-known-project)))
-      
+      ("C-x d" . projectile-remove-known-project)
+      ("C-x x" . projectile-test-project)
+      ("C-x c" . projectile-compile-project)
+      ("C-x r" . projectile-run-project)
+      ("C-x e" . projectile-replace)))
+
 (projectile-mode +1)
 
 ;; Install treemacs
@@ -277,12 +287,14 @@
 	("C-c g s" . magit-status)
 	("C-c g a" . magit-stage)
 	("C-c g C-a" . magit-unstage-file)
-	("C-c g r" . magit-unstage-all)
+	("C-c g C-r" . magit-unstage-all)
 	("C-c g l" . magit-log-current)
 	("C-c g c" . magit-commit-create)
 	("C-c g f" . magit-fetch-all)
 	("C-c g p" . magit-pull-from-upstream)
 	("C-c g b" . magit-branch)
+	("C-c g r" . magit-rebase)
+	("C-c g m" . magit-merge)
 	("C-c g o" . magit-push)))
 
 ;; Autocomplete
@@ -290,6 +302,9 @@
   :ensure t)
 (use-package popup
   :ensure t)
+(use-package company
+  :ensure t)
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; Yaml integration
 (use-package yaml-mode
@@ -297,6 +312,8 @@
 
 ;; Terraform integration
 (use-package terraform-mode
+  :ensure t)
+(use-package company-terraform
   :ensure t)
 
 ;; Golang integration
@@ -315,10 +332,18 @@
 (use-package jdee
   :ensure t)
 
+;; Groovy integration
+(use-package groovy-mode
+  :ensure t)
+
 ;; Markdown integration
 (use-package markdown-mode
   :ensure t)
-
 (use-package grip-mode
   :ensure t
   :hook ((markdown-mode org-mode) . grip-mode))
+
+;; HTML integration
+(use-package web-mode
+  :ensure t)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
