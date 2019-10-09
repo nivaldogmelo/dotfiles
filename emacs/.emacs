@@ -75,17 +75,12 @@
 (setq split-width-threshold 1)
 ;; Set bind to change window split
 (global-set-key (kbd "C-x |") 'toggle-window-split)
-<<<<<<< HEAD
 ;; Change tabs to spaces
 (setq indent-tabs-mode nil)
 ;; Auto-refresh bufffers
 (global-auto-revert-mode t)
 ;; Uncomment region
 (global-set-key (kbd "C-;") 'comment-dwim)
-=======
-;; Block comment                                                                                                                                              
-(global-set-key (kbd "C-c C-c") 'comment-region)
->>>>>>> 2cc1a01d9b2945be2770a3ba6a6df1abf17dfa4d
 
 (global-wakatime-mode)
 
