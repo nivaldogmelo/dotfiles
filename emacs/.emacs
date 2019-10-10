@@ -351,3 +351,12 @@
 (use-package web-mode
   :ensure t)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+;; Nginx integration 
+(use-package nginx-mode
+  :ensure t)
+(use-package company-nginx
+  :ensure t
+  :config
+    (eval-after-load 'nginx-mode
+    '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
