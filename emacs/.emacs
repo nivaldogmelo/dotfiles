@@ -5,19 +5,16 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(custom-enabled-themes (quote (misterioso)))
+ '(custom-enabled-themes '(misterioso))
  '(custom-safe-themes
-   (quote
-    ("2540689fd0bc5d74c4682764ff6c94057ba8061a98be5dd21116bf7bf301acfb" default)))
+   '("2540689fd0bc5d74c4682764ff6c94057ba8061a98be5dd21116bf7bf301acfb" default))
  '(fci-rule-color "#14151E")
  '(jdee-server-dir "/home/nivaldogmelo/.emacs.d/jdee-server")
  '(package-selected-packages
-   (quote
-    (groovy-mode ac-html web-mode company-terraform company-go company grip-mode markdown-mode terraform-mode jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired treemacs centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline)))
+   '(which-key simple-httpd treemacs-all-the-icons pyvenv elpy flycheck company-lsp yasnippet lsp-ui lsp-mode lua-mode oauth2 company-irony jenkins-watch ac-slime slime dockerfile-mode yafolding origami groovy-mode ac-html web-mode company-terraform company-go company grip-mode markdown-mode terraform-mode jdee auto-complete yaml-mode parrot docker kubernetes minimap smartparens smartparens-config kaolin-themes treemacs-magit treemacs-icons-dired centaur-tabs go-complete flymake-go flycheck-gometalinter go-autocomplete go-mode wakatime-mode afternoon-theme aggressive-indent bash-completion powerline))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#d54e53")
+   '((20 . "#d54e53")
      (40 . "goldenrod")
      (60 . "#e7c547")
      (80 . "DarkOliveGreen3")
@@ -34,7 +31,7 @@
      (300 . "#d54e53")
      (320 . "goldenrod")
      (340 . "#e7c547")
-     (360 . "DarkOliveGreen3"))))
+     (360 . "DarkOliveGreen3")))
  '(vc-annotate-very-old-color nil)
  '(wakatime-cli-path "/usr/bin/wakatime")
  '(wakatime-python-bin nil))
@@ -75,12 +72,18 @@
 (setq split-width-threshold 1)
 ;; Set bind to change window split
 (global-set-key (kbd "C-x |") 'toggle-window-split)
-;; Change tabs to spaces
-(setq indent-tabs-mode nil)
 ;; Auto-refresh bufffers
 (global-auto-revert-mode t)
 ;; Uncomment region
 (global-set-key (kbd "C-;") 'comment-dwim)
+;; Untabify except on Makefiles
+(defun untabify-except-makefiles ()
+  "Replace tabs with spaces except in makefiles."
+  (unless (derived-mode-p 'makefile-mode)
+    (untabify (point-min) (point-max))))
+(add-hook 'before-save-hook 'untabify-except-makefiles)
+;; Setup for exercism
+(setq-default indent-tabs-mode nil)
 
 (global-wakatime-mode)
 
@@ -258,16 +261,18 @@
   :commands (kubernetes-overview)
   :bind
   (:map global-map
-	("C-c k o" . kubernetes-overview)
-	("C-c k n" . kubernetes-set-namespace)
-	("C-c k d p" . kubernetes-describe-pod)
-	("C-c k e" . kubernetes-exec-into)
-	("C-c k l" . kubernetes-logs-follow)))
+        ("C-c k o" . kubernetes-overview)
+        ("C-c k n" . kubernetes-set-namespace)
+        ("C-c k d p" . kubernetes-describe-pod)
+        ("C-c k e" . kubernetes-exec-into)
+        ("C-c k l" . kubernetes-logs-follow)))
 
 ;; Install docker-el
 (use-package docker
   :ensure t
   :bind ("C-c d" . docker))
+(use-package dockerfile-mode
+  :ensure t)
 
 ;; Parrot
 (use-package parrot
@@ -277,25 +282,56 @@
   (parrot-set-parrot-type 'default)
   :bind
     (:map global-map
-	  ("C-c p" . parrot-start-animation)))
+          ("C-c p" . parrot-start-animation)))
 
 ;; Git integration
 (use-package magit
   :ensure t
   :bind
   (:map global-map
-	("C-c g s" . magit-status)
-	("C-c g a" . magit-stage)
-	("C-c g C-a" . magit-unstage-file)
-	("C-c g C-r" . magit-unstage-all)
-	("C-c g l" . magit-log-current)
-	("C-c g c" . magit-commit-create)
-	("C-c g f" . magit-fetch-all)
-	("C-c g p" . magit-pull-from-upstream)
-	("C-c g b" . magit-branch)
-	("C-c g r" . magit-rebase)
-	("C-c g m" . magit-merge)
-	("C-c g o" . magit-push)))
+        ("C-c g s" . magit-status)
+        ("C-c g a" . magit-stage)
+        ("C-c g C-a" . magit-unstage-file)
+        ("C-c g C-r" . magit-unstage-all)
+        ("C-c g l" . magit-log-current)
+        ("C-c g c" . magit-commit-create)
+        ("C-c g f" . magit-fetch-all)
+        ("C-c g p" . magit-pull-from-upstream)
+        ("C-c g b" . magit-branch)
+        ("C-c g r" . magit-rebase)
+        ("C-c g m" . magit-merge)
+        ("C-c g o" . magit-push)))
+
+;; lsp Config
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
+
+;; Set up before-save hookts to format buffer and add/delete imports.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Fancier overlays
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :init)
+
+
+(setq lsp-ui-doc-enable nil
+      lsp-ui-peek-enable t
+      lsp-ui-sideline-enable t
+      lsp-ui-imenu-enable t
+      lsp-ui-flycheck-enable t)
+
+;; Snippet support
+(use-package yasnippet
+  :ensure t
+  :commands yas-minor-mode
+  :hook (go-mode . yas-minor-mode))
 
 ;; Autocomplete
 (use-package auto-complete
@@ -303,11 +339,21 @@
 (use-package popup
   :ensure t)
 (use-package company
-  :ensure t)
+  :ensure t
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-lenght 1))
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; Start Company-mode
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+
+;; C/C++ integration
+(use-package company-irony
+  :ensure t)
+(eval-after-load 'company
+                   '(add-to-list 'company-backends 'company-irony))
 
 ;; Yaml integration
 (use-package yaml-mode
@@ -323,14 +369,11 @@
 ;; Golang integration
 (use-package go-mode
   :ensure t)
-(use-package go-complete
-  :ensure t)
 (exec-path-from-shell-copy-env "GOPATH")
 (add-hook 'completion-at-point-functions 'go-complete-at-point)
 (add-to-list 'load-path "/home/nivaldogmelo/.emacs.d/custom-libs")
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(ac-config-default)
+(setq go-fmt-command "goimports")
+(add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; Java integration
 (use-package jdee
@@ -352,11 +395,35 @@
   :ensure t)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-;; Nginx integration 
-(use-package nginx-mode
+;; Lisp integration
+(use-package slime
   :ensure t)
-(use-package company-nginx
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+(use-package ac-slime
+  :ensure t)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'slime-repl-mode))
+
+;; Lua integration
+(use-package lua-mode
+  :ensure t)
+
+;; Python integration
+(use-package elpy
   :ensure t
-  :config
-    (eval-after-load 'nginx-mode
-    '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
+
+;; ReactJS integration
+(use-package flycheck
+  :ensure t)
+
+(use-package avy
+  :ensure t)
+
+(use-package which-key
+  :ensure t)
