@@ -1,0 +1,7 @@
+* Emacs Commands
+** Tramp
+   Open File 
+   C-x C-f /gssh:<instance-name>:/path/to/file
+   
+   Open File as sudo
+   C-x C-f /gssh:<instance-name>|sudo:<instance-name>:/path/to/file
