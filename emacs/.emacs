@@ -15,46 +15,72 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#1D252C" "#D95468" "#8BD49C" "#EBBF83" "#5EC4FF" "#E27E8D" "#70E1E8" "#A0B3C5"])
- '(custom-safe-themes
-   '("d268b67e0935b9ebc427cad88ded41e875abfcc27abd409726a92e55459e0d01" "1704976a1797342a1b4ea7a75bdbb3be1569f4619134341bd5a4c1cfb16abad4" "da53441eb1a2a6c50217ee685a850c259e9974a8fa60e899d393040b4b8cc922" "e8df30cd7fb42e56a4efc585540a2e63b0c6eeb9f4dc053373e05d774332fc13" "da186cce19b5aed3f6a2316845583dbee76aea9255ea0da857d1c058ff003546" "7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae" "b0e446b48d03c5053af28908168262c3e5335dcad3317215d9fdeb8bac5bacf9" "4f1d2476c290eaa5d9ab9d13b60f2c0f1c8fa7703596fa91b235db7f99a9441b" "e19ac4ef0f028f503b1ccafa7c337021834ce0d1a2bca03fcebc1ef635776bea" "97db542a8a1731ef44b60bc97406c1eb7ed4528b0d7296997cbb53969df852d6" default))
- '(exwm-floating-border-color "#0b0e11")
- '(fci-rule-color "#56697A")
- '(helm-minibuffer-history-key "M-p")
- '(highlight-tail-colors ((("#283637") . 0) (("#25373e") . 20)))
- '(jdee-db-active-breakpoint-face-colors (cons "#10151C" "#5EC4FF"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#10151C" "#8BD49C"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#10151C" "#41505E"))
- '(me\.alpheus/gotags-tags-file "~/code/web-api-tester/GOTAGS")
- '(objed-cursor-color "#D95468")
- '(org-export-backends '(ascii html icalendar latex md odt))
- '(package-selected-packages
-   '(smartparens lsp-jedi treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil all-the-icons doom-themes helm-projectile multi-vterm ob-go projectile company-quickhelp-terminal company-quickhelp company-quickhelp-mode terraform-doc company-terraform terraform-mode company-go company-lsp go-mode flycheck lsp-ui lsp-mode magit evil-org org-mode elisp-format vterm powerline-evil powerline undo-tree helm async popup evil-collection evil))
- '(pdf-view-midnight-colors (cons "#A0B3C5" "#1D252C"))
- '(rustic-ansi-faces
-   ["#1D252C" "#D95468" "#8BD49C" "#EBBF83" "#5EC4FF" "#E27E8D" "#70E1E8" "#A0B3C5"])
- '(vc-annotate-background "#1D252C")
- '(vc-annotate-color-map
-   (list
-    (cons 20 "#8BD49C")
-    (cons 40 "#abcd93")
-    (cons 60 "#cbc68b")
-    (cons 80 "#EBBF83")
-    (cons 100 "#e5ae6f")
-    (cons 120 "#df9e5b")
-    (cons 140 "#D98E48")
-    (cons 160 "#dc885f")
-    (cons 180 "#df8376")
-    (cons 200 "#E27E8D")
-    (cons 220 "#df7080")
-    (cons 240 "#dc6274")
-    (cons 260 "#D95468")
-    (cons 280 "#b35365")
-    (cons 300 "#8d5163")
-    (cons 320 "#675160")
-    (cons 340 "#56697A")
-    (cons 360 "#56697A")))
+ '(ansi-color-names-vector ["#1D252C" "#D95468" "#8BD49C" "#EBBF83" "#5EC4FF" "#E27E8D" "#70E1E8"
+			    "#A0B3C5"]) 
+ '(custom-safe-themes '("745d03d647c4b118f671c49214420639cb3af7152e81f132478ed1c649d4597d"
+			"1f1b545575c81b967879a5dddc878783e6ebcca764e4916a270f9474215289e5"
+			"e6f3a4a582ffb5de0471c9b640a5f0212ccf258a987ba421ae2659f1eaa39b09"
+			"22a514f7051c7eac7f07112a217772f704531b136f00e2ccfaa2e2a456558d39"
+			"1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf"
+			"8d7b028e7b7843ae00498f68fad28f3c6258eda0650fe7e17bfb017d51d0e2a2"
+			"f91395598d4cb3e2ae6a2db8527ceb83fed79dbaf007f435de3e91e5bda485fb"
+			"f6665ce2f7f56c5ed5d91ed5e7f6acb66ce44d0ef4acfaa3a42c7cfe9e9a9013"
+			"cf922a7a5c514fad79c483048257c5d8f242b21987af0db813d3f0b138dfaf53"
+			"d268b67e0935b9ebc427cad88ded41e875abfcc27abd409726a92e55459e0d01"
+			"1704976a1797342a1b4ea7a75bdbb3be1569f4619134341bd5a4c1cfb16abad4"
+			"da53441eb1a2a6c50217ee685a850c259e9974a8fa60e899d393040b4b8cc922"
+			"e8df30cd7fb42e56a4efc585540a2e63b0c6eeb9f4dc053373e05d774332fc13"
+			"da186cce19b5aed3f6a2316845583dbee76aea9255ea0da857d1c058ff003546"
+			"7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae"
+			"b0e446b48d03c5053af28908168262c3e5335dcad3317215d9fdeb8bac5bacf9"
+			"4f1d2476c290eaa5d9ab9d13b60f2c0f1c8fa7703596fa91b235db7f99a9441b"
+			"e19ac4ef0f028f503b1ccafa7c337021834ce0d1a2bca03fcebc1ef635776bea"
+			"97db542a8a1731ef44b60bc97406c1eb7ed4528b0d7296997cbb53969df852d6" default)) 
+ '(exwm-floating-border-color "#0b0e11") 
+ '(fci-rule-color "#56697A") 
+ '(helm-minibuffer-history-key "M-p") 
+ '(highlight-tail-colors ((("#283637") . 0) 
+			  (("#25373e") . 20))) 
+ '(jdee-db-active-breakpoint-face-colors (cons "#10151C" "#5EC4FF")) 
+ '(jdee-db-requested-breakpoint-face-colors (cons "#10151C" "#8BD49C")) 
+ '(jdee-db-spec-breakpoint-face-colors (cons "#10151C" "#41505E")) 
+ '(me\.alpheus/gotags-tags-file "~/code/web-api-tester/GOTAGS") 
+ '(objed-cursor-color "#D95468") 
+ '(org-export-backends '(ascii html icalendar latex md odt)) 
+ '(package-selected-packages '(company-nginx nginx-mode lua-mode company-ansible yaml-mode
+					     dockerfile-mode slime-company slime
+					     common-lisp-snippets adjust-parens graphql-mode company
+					     smartparens lsp-jedi treemacs-magit
+					     treemacs-icons-dired treemacs-projectile treemacs-evil
+					     all-the-icons doom-themes helm-projectile multi-vterm
+					     ob-go projectile company-quickhelp-terminal
+					     company-quickhelp company-quickhelp-mode terraform-doc
+					     company-terraform terraform-mode company-go company-lsp
+					     go-mode flycheck lsp-ui lsp-mode magit evil-org
+					     org-mode elisp-format vterm powerline-evil powerline
+					     undo-tree helm async popup evil-collection evil)) 
+ '(pdf-view-midnight-colors (cons "#A0B3C5" "#1D252C")) 
+ '(rustic-ansi-faces ["#1D252C" "#D95468" "#8BD49C" "#EBBF83" "#5EC4FF" "#E27E8D" "#70E1E8"
+		      "#A0B3C5"]) 
+ '(vc-annotate-background "#1D252C") 
+ '(vc-annotate-color-map (list (cons 20 "#8BD49C") 
+			       (cons 40 "#abcd93") 
+			       (cons 60 "#cbc68b") 
+			       (cons 80 "#EBBF83") 
+			       (cons 100 "#e5ae6f") 
+			       (cons 120 "#df9e5b") 
+			       (cons 140 "#D98E48") 
+			       (cons 160 "#dc885f") 
+			       (cons 180 "#df8376") 
+			       (cons 200 "#E27E8D") 
+			       (cons 220 "#df7080") 
+			       (cons 240 "#dc6274") 
+			       (cons 260 "#D95468") 
+			       (cons 280 "#b35365") 
+			       (cons 300 "#8d5163") 
+			       (cons 320 "#675160") 
+			       (cons 340 "#56697A") 
+			       (cons 360 "#56697A"))) 
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -315,39 +341,31 @@
   doom-themes 
   :ensure t 
   :config (setq doom-themes-enable-bold t doom-themes-enable-italic t) 
-  (load-theme 'doom-nord t)
+  (load-theme 'doom-solarized-light t)
 
   ;; Flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom treemacs theme (all-the-icons is required)
-  (setq doom-themes-treemacs-theme "doom-nord")
+  (setq doom-themes-treemacs-theme "doom-acario-dark")
   ;; Correct org-mode's native fontification
   (doom-themes-org-config))
 
 (defun white-mode () 
   (interactive) 
-  (load-theme 'doom-nord-light))
+  (load-theme 'doom-solarized-light))
 
 (defun dark-mode () 
   (interactive) 
-  (load-theme 'doom-nord))
+  (load-theme 'doom-acario-dark))
+
+(defun blue-mode () 
+  (interactive) 
+  (load-theme 'doom-solarized-dark))
 
 ;; Icons in GUI
 (use-package 
   all-the-icons 
   :ensure t)
-
-;; Icons in Terminal
-(use-package 
-  memoize 
-  :ensure t)
-(add-to-list 'load-path "~/.local/share/icons-in-terminal/")
-(add-to-list 'load-path "~/.emacs.d/custom-libs/icons-in-terminal.el/")
-(add-to-list 'load-path "~/.emacs.d/custom-libs/icons-in-terminal-helm/")
-
-(require 'icons-in-terminal)
-(require 'icons-in-terminal-helm)
-(icons-in-terminal-helm-enable)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Email ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load
@@ -448,8 +466,7 @@
 ;; to the generated GOTAGS
 (add-to-list 'load-path "~/.emacs.d/custom-libs/go")
 (require 'me-alpheus-gotags)
-(evil-define-key 'normal go-mode-map
-  (kbd "gh") 'me.alpheus/gotags/tag-search)
+(evil-define-key 'normal go-mode-map (kbd "gh") 'me.alpheus/gotags/tag-search)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Terraform ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install mode
@@ -488,3 +505,89 @@
   lsp-jedi 
   :ensure t)
 (add-hook 'python-mode-hook #'lsp-deferred)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GraphQL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Install Mode
+(use-package 
+  graphql-mode 
+  :ensure t)
+
+;; Enable Mode at .graphqls
+(add-to-list 'auto-mode-alist '("\\.graphqls$" . graphql-mode))
+
+;; Register LSP
+(add-to-list 'lsp-language-id-configuration '(graphql-mode . "graphql"))
+
+(lsp-register-client (make-lsp-client :new-connection (lsp-stdio-connection '("graphql-lsp" "server"
+									      "--method=stream")) 
+				      :activation-fn (lsp-activate-on "graphql") 
+				      :server-id 'graphql))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Common Lisp ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Adjust parentheses
+(use-package 
+  adjust-parens 
+  :ensure t)
+(add-hook 'lisp-mode-hook #'adjust-parens-mode)
+
+;; Snippets
+(use-package 
+  common-lisp-snippets 
+  :ensure t)
+(add-hook 'lisp-mode-hook #'yas-minor-mode)
+
+;; Compiler
+(use-package 
+  slime 
+  :ensure t)
+
+(use-package 
+  slime-company 
+  :ensure t)
+
+;; Setup Lisp Interpreter
+(setq inferior-lisp-program "sbcl")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Docker
+;; Enable mode
+(use-package 
+  dockerfile-mode 
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; YAML ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; YAML
+(use-package 
+  yaml-mode 
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ansible ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Ansible
+(use-package 
+  company-ansible 
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Lua ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mode
+(use-package 
+  lua-mode 
+  :ensure t)
+
+;; Setup lsp variables
+(setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+(setq lsp-clients-lua-language-server-install-dir "/usr/lib/lua-language-server/")
+
+;; Start lsp
+(add-hook 'lua-mode-hook #'lsp-deferred)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Nginx ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Enable mode
+(use-package 
+  nginx-mode 
+  :ensure t)
+
+(use-package 
+  company-nginx 
+  :ensure t 
+  :config (add-hook 'nginx-mode-hook (lambda () 
+				       (add-to-list 'company-backends #'company-nginx))))
