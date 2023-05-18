@@ -29,6 +29,10 @@
   yasnippet
   :ensure t
   :config (yas-reload-all))
+(add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+(use-package
+  yasnippet-snippets
+  :ensure t)
 
 ;; Auto closes brackets/parenthesis/quotes
 (use-package
@@ -41,11 +45,6 @@
 ;; Slower but safer
 ;; (setq backup-by-copying t)
 (setq delete-old-versions t kept-new-versions 6 kept-old-versions 2 version-control t)
-
-;; Writeroom
-(use-package
-  writeroom-mode
-  :ensure t)
 
 ;; Delete whitespace on sabe
 (add-hook 'before-save-hook 'whitespace-cleanup)
@@ -78,8 +77,7 @@
   :ensure t
   :init (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
-  (setq evil-esc-delay 0)
-  :config (evil-mode))
+  (setq evil-esc-delay 0))
 
 ;; Setup Evil Collection
 (use-package
@@ -95,6 +93,9 @@
 
 ;; Bind undo-tree with evil-undo-system
 (evil-set-undo-system 'undo-tree)
+
+(add-hook 'prog-mode-hook 'evil-local-mode)
+(global-set-key (kbd "<f9>") 'evil-local-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Helm ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install
@@ -113,13 +114,22 @@
 ;; Install
 (use-package
   powerline
-  :ensure t)
+  :ensure t
+  :config (powerline-default-theme))
 
 ;; Integrate with Evil
 (use-package
   powerline-evil
+  :ensure t)
+
+(use-package
+  airline-themes
   :ensure t
-  :config (powerline-evil-vim-color-theme))
+  ;; :config (load-theme 'airline-deus)
+  :config (load-theme 'airline-base16_dracula)
+  (setq airline-helm-colors t)
+  (setq airline-hide-vc-branch-on-inactive-buffers t))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Terminal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install
@@ -139,9 +149,37 @@
   :config (add-hook 'vterm-mode-hook (lambda ()
 				       (setq-local evil-insert-state-cursor 'box)
 				       (evil-insert-state)))
+  (define-key vterm-mode-map [return]                      #'vterm-send-return)
+
+  (setq vterm-keymap-exceptions nil)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+  (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
   (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
   (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
-  (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev))
+  (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
+  (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+  (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+  (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume)
+  (setq multi-vterm-dedicated-window-height-percent 30))
+
+(evil-global-set-key 'normal (kbd "zi") 'multi-vterm-dedicated-toggle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Tramp ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Setup gcloud ssh
@@ -246,9 +284,10 @@
 		  treemacs-space-between-root-nodes      t treemacs-tag-follow-cleanup            t
 		  treemacs-tag-follow-delay 1.5 treemacs-user-mode-line-format         nil
 		  treemacs-user-header-line-format nil treemacs-width                         35
-		  treemacs-width-is-initially-locked t treemacs-workspace-switch-cleanup      nil)
+		  treemacs-width-is-initially-locked t Treemacs-workspace-switch-cleanup      nil)
 	    (treemacs-follow-mode t)
 	    (treemacs-filewatch-mode t)
+	    (treemacs-git-commit-diff-mode t)
 	    (treemacs-fringe-indicator-mode 'always)
 	    (pcase (cons (not (null (executable-find "git")))
 			 (not (null treemacs-python-executable)))
@@ -289,8 +328,7 @@
 ;; Modus Themes
 (use-package
   modus-themes
-  :ensure t
-  :bind ("<f5>" . modus-themes-toggle))
+  :ensure t)
 
 ;; Modus theme customization
 ;;;; Mode Line
@@ -310,19 +348,18 @@
 				 (selection . (semibold))
 				 (popup . (accented))))
 
-
-
 ;; Load Theme
 (use-package
   doom-themes
   :ensure t
-  :config ;;(setq doom-themes-enable-bold t doom-themes-enable-italic t)
-  (load-theme 'modus-operandi t)
+  :config (setq doom-themes-enable-bold t doom-themes-enable-italic t)
+  ;; (load-theme 'modus-operandi t)
+  (load-theme 'doom-dracula t)
 
   ;; Flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom treemacs theme (all-the-icons is required)
-  (setq doom-themes-treemacs-theme "modus-operandi")
+  (setq doom-themes-treemacs-theme "doom-dracula")
   ;; Correct org-mode's native fontification
   (doom-themes-org-config))
 
@@ -342,6 +379,25 @@
 (use-package
   all-the-icons
   :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  EAF  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package eaf
+  :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+  :custom
+  ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
+  (eaf-browser-continue-where-left-off t)
+  (eaf-browser-enable-adblocker t)
+  (browse-url-browser-function 'eaf-open-browser)
+  :config
+  (defalias 'browse-web #'eaf-open-browser))
+
+(require 'eaf-browser)
+(require 'eaf-pdf-viewer)
+(require 'eaf-file-manager)
+(require 'eaf-image-viewer)
+(require 'eaf-js-video-player)
+(require 'eaf-rss-reader)
+(require 'eaf-markdown-previewer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Email ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load
@@ -461,6 +517,14 @@
 (require 'me-alpheus-gotags)
 (evil-define-key 'normal go-mode-map (kbd "gh") 'me.alpheus/gotags/tag-search)
 
+;; Projectile config
+(projectile-register-project-type 'go '("go.mod")
+				  :project-file "go.mod"
+				  :compile "go build"
+				  :test "go test ./..."
+				  :run "go run main.go"
+				  :test-suffix "_test")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Terraform ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install mode
 (use-package
@@ -485,11 +549,25 @@
   :ensure t)
 
 ;; Load LSP
-;; (lsp-register-client
-;;   (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/bin/terraform-ls" "serve"))
-;;                    :major-modes '(terraform-mode)
-;;                    :server-id 'terraform-ls))
-;; (add-hook 'terraform-mode-hook #'lsp-deferred)
+(lsp-register-client
+  (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/bin/terraform-ls" "serve"))
+		   :major-modes '(terraform-mode)
+		   :server-id 'terraform-ls))
+(add-hook 'terraform-mode-hook #'lsp-deferred)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LSP Server
+(use-package
+  eglot
+  :ensure t)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+
+
+;; Yasnippets
+(add-hook 'c-mode-hook #'yas-minor-mode)
+(add-hook 'c++-mode-hook #'yas-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LSP Server
@@ -506,6 +584,8 @@
 (use-package
   ein
   :ensure t)
+
+(add-hook 'python-mode-hook #'yas-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GraphQL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install Mode
@@ -548,13 +628,20 @@
 
 ;; Setup Lisp Interpreter
 (setq inferior-lisp-program "sbcl")
+(add-hook 'lisp-mode-hook #'evil-local-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Docker
+(use-package
+  docker
+  :ensure t)
+
 ;; Enable mode
 (use-package
   dockerfile-mode
   :ensure t)
+
+;; TODO: tramp integration
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; YAML ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; YAML
@@ -586,13 +673,6 @@
 (use-package
   nginx-mode
   :ensure t)
-
-;; (use-package
-;;   company-nginx
-;;   :ensure t
-;;   :config (add-hook 'nginx-mode-hook (lambda ()
-
-;;				       (add-to-list 'company-backends #'company-nginx))))
 
 ;; Load LSP
 (lsp-register-client

@@ -1,3 +1,0 @@
-func ${1:name}(w http.ResponseWriter, req *http.Request) {
-     $0
-}
