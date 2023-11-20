@@ -15,7 +15,8 @@
 (xterm-mouse-mode 1)
 
 ;; Enable line numbers
-(global-linum-mode t)
+(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+(add-hook 'text-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 ;; Asynchronous processing
 (use-package
@@ -70,6 +71,25 @@
 ;; Prevent undo tree files from polluting your git repo
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 
+;;PDF Support
+(use-package
+  pdf-tools
+  :defer t
+  :commands (pdf-view-mode pdf-tools-install)
+  :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install)
+  (define-pdf-cache-function pagelabels)
+  :hook ((pdf-view-mode-hook . (lambda () (display-line-numbers-mode -1)))
+	 (pdf-view-mode-hook . pdf-tools-enable-minor-mode))
+  :ensure t)
+
+(use-package
+  origami
+  :ensure t
+  :hook (prog-mode . origami-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Evil ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Setup Evil
 (use-package
@@ -107,8 +127,15 @@
   (global-set-key (kbd "C-x C-f") 'helm-find-files) ;; Bind helm to find-file
   )
 
+(use-package
+  helm-xref
+  :ensure t)
+
 ;; Useful keybinds
 (define-key evil-ex-map "e" 'helm-find-files)
+(define-key global-map [remap find-file] #'helm-find-files)
+(define-key global-map [remap execute-extended-command] #'helm-M-x)
+(define-key global-map [remap switch-to-buffer] #'helm-mini)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Powerline ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install
@@ -354,7 +381,7 @@
   :ensure t
   :config (setq doom-themes-enable-bold t doom-themes-enable-italic t)
   ;; (load-theme 'modus-operandi t)
-  (load-theme 'doom-dracula t)
+  ;; (load-theme 'doom-dracula t)
 
   ;; Flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -375,29 +402,16 @@
   (interactive)
   (load-theme 'doom-solarized-dark))
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'dracula-pro-vanhelsing t)
+
+;; Fonts
+(set-frame-font "Cascadia Code")
+
 ;; Icons in GUI
 (use-package
   all-the-icons
   :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  EAF  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package eaf
-  :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
-  :custom
-  ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
-  (eaf-browser-continue-where-left-off t)
-  (eaf-browser-enable-adblocker t)
-  (browse-url-browser-function 'eaf-open-browser)
-  :config
-  (defalias 'browse-web #'eaf-open-browser))
-
-(require 'eaf-browser)
-(require 'eaf-pdf-viewer)
-(require 'eaf-file-manager)
-(require 'eaf-image-viewer)
-(require 'eaf-js-video-player)
-(require 'eaf-rss-reader)
-(require 'eaf-markdown-previewer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Email ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load
@@ -415,6 +429,11 @@
 					;  (mu4e-alert-enable-notifications))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; LSP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package
+  which-key
+  :ensure t)
+(which-key-mode)
+
 ;; Install
 (use-package
   lsp-mode
@@ -434,6 +453,19 @@
   (setq lsp-ui-imenu-enable t)
   (setq lsp-ui-flycheck-enable t))
 
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
+
+;; Debug
+(use-package
+  dap-mode
+  :ensure t
+  :config (dap-ui-mode 1)
+  (dap-tooltip-mode 1)
+  (tooltip-mode 1)
+  (dap-ui-controls-mode 1))
+
+(add-to-list 'load-path "~/.emacs.d/custom-libs/go")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Syntax Check ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package
@@ -515,6 +547,7 @@
 ;; to the generated GOTAGS
 (add-to-list 'load-path "~/.emacs.d/custom-libs/go")
 (require 'me-alpheus-gotags)
+(require 'dap-dlv-go)
 (evil-define-key 'normal go-mode-map (kbd "gh") 'me.alpheus/gotags/tag-search)
 
 ;; Projectile config
@@ -524,6 +557,54 @@
 				  :test "go test ./..."
 				  :run "go run main.go"
 				  :test-suffix "_test")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Rust ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package
+  rustic
+  :ensure t
+  :bind (:map rustic-mode-map
+	      ("M-j" . lsp-ui-imenu)
+	      ("C-c C-c f" . lsp-find-references)
+	      ("C-c C-c l" . flycheck-list-errors)
+	      ("C-c C-c a" . lsp-execute-code-action)
+	      ("C-c C-c r" . lsp-rename)
+	      ("C-c C-c q" . lsp-workspace-restart)
+	      ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable fustfmt on save
+  (setq rustic-format-on-sabe t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(add-hook 'rustic-mode-hook #'yas-minor-mode)
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+;; Load LSP
+(add-hook 'rustic-mode-hook #'lsp-deferred)
+(lsp-register-custom-settings '((lsp-rust-analyzer-cargo-watch-command "clippy")
+				(lsp-eldoc-render-all t)
+				(lsp-idle-delay 0.6)
+				;; enable / disable the hints as you prefer:
+				(lsp-inlay-hint-enable t)
+				;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+				(lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+				(lsp-rust-analyzer-display-chaining-hints t)
+				(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+				(lsp-rust-analyzer-display-closure-return-type-hints t)
+				(lsp-rust-analyzer-display-parameter-hints nil)
+				(lsp-rust-analyzer-display-reborrow-hints nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Terraform ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install mode
@@ -557,17 +638,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LSP Server
-(use-package
-  eglot
-  :ensure t)
-(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
+;; (use-package
+;;   eglot
+;;   :ensure t)
+;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+;; (add-hook 'c-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
 
 ;; Yasnippets
 (add-hook 'c-mode-hook #'yas-minor-mode)
 (add-hook 'c++-mode-hook #'yas-minor-mode)
+
+;; DAP
+(add-to-list 'load-path "~/.emacs.d/custom-libs/cpp")
+(require 'dap-cpptools)
+
+;; Tramp
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+		  :major-modes '(c-mode)
+		  :remote? t
+		  :server-id 'clangd-remote))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LSP Server
@@ -586,6 +680,15 @@
   :ensure t)
 
 (add-hook 'python-mode-hook #'yas-minor-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Arduino ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package
+  arduino-mode
+  :ensure t)
+
+(use-package
+  arduino-cli-mode
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GraphQL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install Mode
