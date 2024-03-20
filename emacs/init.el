@@ -29,7 +29,9 @@
 (use-package
   yasnippet
   :ensure t
-  :config (yas-reload-all))
+  :config (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
 (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
 (use-package
   yasnippet-snippets
@@ -89,6 +91,37 @@
   origami
   :ensure t
   :hook (prog-mode . origami-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; RSS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package
+  elfeed
+  :ensure t)
+
+(setq elfeed-feeds
+      '(("https://www.phoronix.com/rss.php" news linux)
+	("https://igor.mp/blog/atom" blog)
+	("https://nivaldogmelo.github.io/posts/index.xml" blog)
+	("http://nedroid.com/feed/" webcomic)))
+
+(use-package elfeed-dashboard
+  :ensure t
+  :config
+  (setq elfeed-dashboard-file "~/.emacs.d/elfeed-dashboard.org")
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+
+(use-package
+  elfeed-summary
+  :ensure t)
+
+(use-package
+  elfeed-goodies
+  :ensure t)
+
+(use-package
+  elfeed-webkit
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Evil ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Setup Evil
@@ -441,17 +474,41 @@
   :init (setq lsp-keymap-prefix "C-c l")
   :config (setq gc-cons-threshold 100000000)
   (setq read-process-output-max (* 1024 1024))
-  :commands (lsp lsp-deferred))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  :commands (lsp lsp-deferred)
+  :custom
+  ((lsp-rust-analyzer-cargo-watch-command "clippy")
+				(lsp-eldoc-render-all t)
+				(lsp-idle-delay 0.6)
+				;; enable / disable the hints as you prefer:
+				(lsp-inlay-hint-enable t)
+				;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+				(lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+				(lsp-rust-analyzer-display-chaining-hints t)
+				(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+				(lsp-rust-analyzer-display-closure-return-type-hints t)
+				(lsp-rust-analyzer-display-parameter-hints nil)
+				(lsp-rust-analyzer-display-reborrow-hints nil)))
 
 ;; UI
 (use-package
   lsp-ui
   :ensure t
   :config (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-update-mode 'line)
+  (setq lsp-ui-sideline-show-diagnostics t)
   (setq lsp-ui-doc-enable t)
   (setq lsp-ui-peek-enable t)
-  (setq lsp-ui-imenu-enable t)
-  (setq lsp-ui-flycheck-enable t))
+  (setq lsp-ui-peek-show-directory t)
+  (setq lsp-ui-imenu-enable t))
+
+
+(keymap-global-set "C-c d" 'lsp-find-definition)
+(define-key lsp-ui-mode-map [remap lsp-find-definitions] #'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map [remap lsp-find-references] #'lsp-ui-peek-find-references)
+
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
@@ -480,7 +537,38 @@
   :config (setq company-tooltip-limit 20)
   (setq company-idle-delay .3)
   (setq company-echo-delay 0)
-  (setq company-begin-commands '(self-insert-command)))
+  (setq company-begin-commands '(self-insert-command))
+  :bind
+  (:map company-mode-map
+	("<tab>" . tab-indent-or-complete)
+	("TAB" . tab-indent-or-complete)))
+
+(defun company-yasnippet-or-completion ()
+  (interactive)
+  (or (do-yas-expand)
+      (company-complete-common)))
+
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+	(backward-char 1)
+	(if (looking-at "::") t nil)))))
+
+(defun do-yas-expand ()
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas/minor-mode)
+	    (null (do-yas-expand)))
+	(if (check-expansion)
+	    (company-complete-common)
+	  (indent-for-tab-command)))))
 
 ;; Enable in all buffers
 (add-hook 'after-init-hook 'global-company-mode)
@@ -564,12 +652,12 @@
   :ensure t
   :bind (:map rustic-mode-map
 	      ("M-j" . lsp-ui-imenu)
-	      ("C-c C-c f" . lsp-find-references)
-	      ("C-c C-c l" . flycheck-list-errors)
-	      ("C-c C-c a" . lsp-execute-code-action)
-	      ("C-c C-c r" . lsp-rename)
-	      ("C-c C-c q" . lsp-workspace-restart)
-	      ("C-c C-c s" . lsp-rust-analyzer-status))
+	      ("C-c f" . lsp-find-references)
+	      ("C-c e" . flycheck-list-errors)
+	      ("C-c a" . lsp-execute-code-action)
+	      ("C-c r" . lsp-rename)
+	      ("C-c q" . lsp-workspace-restart)
+	      ("C-c s" . lsp-rust-analyzer-status))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -577,10 +665,10 @@
   ;; (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable fustfmt on save
-  (setq rustic-format-on-sabe t)
+  (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
-(add-hook 'rustic-mode-hook #'yas-minor-mode)
+;; (add-hook 'rustic-mode-hook #'yas-minor-mode)
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
@@ -589,22 +677,11 @@
   ;; no longer be necessary.
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
-  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+  (keymap-global-set "C-c C-c C-a" 'rustic-cargo-add))
 
-;; Load LSP
-(add-hook 'rustic-mode-hook #'lsp-deferred)
-(lsp-register-custom-settings '((lsp-rust-analyzer-cargo-watch-command "clippy")
-				(lsp-eldoc-render-all t)
-				(lsp-idle-delay 0.6)
-				;; enable / disable the hints as you prefer:
-				(lsp-inlay-hint-enable t)
-				;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
-				(lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-				(lsp-rust-analyzer-display-chaining-hints t)
-				(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-				(lsp-rust-analyzer-display-closure-return-type-hints t)
-				(lsp-rust-analyzer-display-parameter-hints nil)
-				(lsp-rust-analyzer-display-reborrow-hints nil)))
+;; ;; Load LSP
+;; (add-hook 'rustic-mode-hook #'lsp-deferred)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Terraform ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install mode
@@ -750,12 +827,6 @@
 ;; YAML
 (use-package
   yaml-mode
-  :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ansible ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Ansible
-(use-package
-  company-ansible
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Lua ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

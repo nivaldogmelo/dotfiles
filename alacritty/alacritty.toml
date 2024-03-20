@@ -1,0 +1,4 @@
+import = ["~/.config/alacritty/dracula-pro.toml"]
+
+[window]
+opacity = 0.8
