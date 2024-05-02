@@ -150,6 +150,16 @@
 (add-hook 'prog-mode-hook 'evil-local-mode)
 (global-set-key (kbd "<f9>") 'evil-local-mode)
 
+;; Setup Absolute/Relative line numbers
+(defun my/display-relative-numbers ()
+  (setq display-line-numbers 'relative))
+
+(defun my/display-absolute-numbers ()
+  (setq display-line-numbers t))
+
+(add-hook 'evil-insert-state-entry-hook #'my/display-relative-numbers)
+(add-hook 'evil-insert-state-exit-hook #'my/display-absolute-numbers)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Helm ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Install
 (use-package
@@ -481,7 +491,7 @@
 				(lsp-eldoc-render-all t)
 				(lsp-idle-delay 0.6)
 				;; enable / disable the hints as you prefer:
-				(lsp-inlay-hint-enable t)
+				(lsp-inlay-hint-enable nil)
 				;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
 				(lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
 				(lsp-rust-analyzer-display-chaining-hints t)
