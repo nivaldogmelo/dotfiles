@@ -19,6 +19,7 @@
   :hook
   (prog-mode . evil-local-mode)
   :bind
+  ("C-i" . 'evil-normal-state)
   ("<f9>" . 'evil-local-mode))
 
 ;; Setup Evil Collection
@@ -28,6 +29,9 @@
   :init (setq evil-collection-setup-minibuffer t))
 ;; -EvilEmacs
 
+(when (not (display-graphic-p))
+  (global-set-key (kbd "C-c q") 'evil-normal-state)
+)
 
 (provide 'init-evil)
 ;;; init-evil.el ends here

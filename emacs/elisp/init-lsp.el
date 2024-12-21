@@ -26,7 +26,7 @@
   (lsp-prefer-flymake nil)
   (read-process-output-max (* 1024 1024))
   (lsp-keep-workspace-alive nil)
-   (lsp-inlay-hint-enable nil)
+  (lsp-inlay-hint-enable t)
   (lsp-eldoc-render-all t))
 ;; -LspEmacs
 

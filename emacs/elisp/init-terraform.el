@@ -5,13 +5,6 @@
 ;;
 ;;; Code:
 
-
-;; TerraformMode
-(use-package
-  terraform-mode
-  :ensure t)
-;; -TerraformMode
-
 ;; TerraformCompany
 (use-package
   company-terraform
@@ -41,9 +34,18 @@
 		   :server-id 'terraform-ls))
     (lsp-deferred)))
 
-(add-hook 'terraform-mode-hook #'setup-lsp-terraform)
 ;; -TerraformLsp
 
+;; TerraformMode
+(use-package
+  terraform-mode
+  :ensure t
+  :config
+  (add-hook 'terraform-mode-hook 'terraform-format-on-save-mode)
+  (add-hook 'terraform-mode-hook #'setup-lsp-terraform)
+  (setq lsp-enable-links t)
+  )
+;; -TerraformMode
 
 (provide 'init-terraform)
 ;;; init-terraform.el ends here

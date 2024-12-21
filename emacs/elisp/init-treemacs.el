@@ -84,6 +84,12 @@
   :ensure t)
 
 (use-package
+  treemacs-nerd-icons
+  :ensure t
+  :config
+  (treemacs-load-theme "nerd-icons"))
+
+(use-package
   treemacs-projectile
   :after (treemacs projectile)
   :ensure t)

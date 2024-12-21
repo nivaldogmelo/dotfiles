@@ -15,7 +15,7 @@
 	      ("C-c p" . projectile-command-map)))
 
 ;; Automated Project Discovery
-(setq projectile-project-search-path '("~/code/"))
+(setq projectile-project-search-path '("~/code/home/" "~/code/video-streaming/" "~/code/nginx-with-rust/"))
 ;; -ProjectileEmacs
 
 ;; ProjectileHelm

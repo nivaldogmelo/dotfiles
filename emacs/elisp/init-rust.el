@@ -18,9 +18,14 @@
   ;; (setq lsp-enable-symbol-highlighting nil)
   ;; (setq lsp-signature-auto-activate nil)
 
-  ;; comment to disable fustfmt on save
+  ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook #'disable-before-save-hook)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+;; Disable lsp format buffer on save
+(defun disable-before-save-hook ()
+  (remove-hook 'before-save-hook 'lsp-format-buffer t))
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
@@ -50,6 +55,7 @@
   (setq lsp-rust-analyzer-display-chaining-hints t)
   (setq lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
   (setq lsp-rust-analyzer-display-closure-return-type-hints t)
+  (setq lsp-rust-analyzer-display-parameter-hints nil)
   (setq lsp-rust-analyzer-display-parameter-hints nil)
   (setq lsp-rust-analyzer-display-reborrow-hints nil))
 

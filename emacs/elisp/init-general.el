@@ -64,6 +64,9 @@
   (require 'smartparens-config))
 ;; -AutocloseParens
 
+(when (not (display-graphic-p))
+  (setq xterm-mouse-mode t)
+)
 
 (provide 'init-general)
 ;;; init-general.el ends here
