@@ -2,6 +2,6 @@
 # name: method
 # key: mfn
 # --
-fn ${1:name}(&mut self)${3: -> Result} {
+fn ${1:name}(&mut self${2:, params}) -> ${3:Result} {
    $0
 }

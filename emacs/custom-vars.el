@@ -3,10 +3,78 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-show-quick-access t nil nil "Customized with use-package company")
  '(custom-safe-themes
-   '("683b3fe1689da78a4e64d3ddfce90f2c19eb2d8ab1bab1738a63d8263119c3f4" "ff94bc11cb1ddef83cfdf87c2079b80182c00d50f42184c2a6f61de6773652e6" "944d52450c57b7cbba08f9b3d08095eb7a5541b0ecfb3a0a9ecd4a18f3c28948" "2e05569868dc11a52b08926b4c1a27da77580daa9321773d92822f7a639956ce" "27b3336b6115451a340275d842de6e8b1c49ce0bba45210ed640902240f8961d" "a44e2d1636a0114c5e407a748841f6723ed442dc3a0ed086542dc71b92a87aee" "680f62b751481cc5b5b44aeab824e5683cf13792c006aeba1c25ce2d89826426" "631c52620e2953e744f2b56d102eae503017047fb43d65ce028e88ef5846ea3b" "b99e334a4019a2caa71e1d6445fc346c6f074a05fcbb989800ecbe54474ae1b0" "251ed7ecd97af314cd77b07359a09da12dcd97be35e3ab761d4a92d8d8cf9a71" "c37cf0c1e318ba0a40cb1d39902b4941b64c7063a0a7282a45f534185567841d" "8e57da9e594e7eb3a67952a58098e300b2a3be8c7b24bdf5f5b770f0746f7fb5" "8f13c9ecfd58bb55996d061680fe7f9cc67357910b78c71e28ffb14dd5bdd89c" "8672c645e375c0f89575992c230f3f5ab5854b433c238ed871b59a88c8f1c602" "98e35e087dccfdab62c3b5d3345bea78d892db3fd5a97b10c7caab59657fc342" "6d11f1916de1a827e24b5c4b51ff17e40709e60a9e871d30d2d199fbd8bed0f6" "2b474647799a29add7e3cf34cd9f8178e872f6a4f354f58f4e717d93a53a4eed" "ec2c86933a6e0b96f68f71d4b39ebdd67b43b0b32091b7689acb9acdc2a3e03b" "28cf1f7cc54ab4ee1ba4a4644046bd661941be92ef8327af56909f340cb9d3d5" "64ca5a1381fa96cb86fd6c6b4d75b66dc9c4e0fc1288ee7d914ab8d2638e23a9" "bdb0a37a078bc030ed685e0700b987d296d3473cfe5256c01577a65c67c6c330" "aa6cba541dfa11f90338612befd7ce5af973c43d50e681f5451390abbcf83526" "6b234feec8db588ad5ec2a9d9d7b935f7a155104b25ccfb94d921c45a2ff7d22" "1bdc49116a77e52aaea740cd8e54b93e0bae6c0895dcc36d5c8d1a493e89c78d" "2ed177de0dfc32a6a32d6109ddfd1782a61bcc23916b7b967fa212666d1aa95c" "5912c255e7e46432d6c1c057a2124cce807ad4b901a99bc43e838db0754dff91" "2b8dff32b9018d88e24044eb60d8f3829bd6bbeab754e70799b78593af1c3aba" "51c71bb27bdab69b505d9bf71c99864051b37ac3de531d91fdad1598ad247138" "5f128efd37c6a87cd4ad8e8b7f2afaba425425524a68133ac0efd87291d05874" "7ea883b13485f175d3075c72fceab701b5bf76b2076f024da50dff4107d0db25" "7e068da4ba88162324d9773ec066d93c447c76e9f4ae711ddd0c5d3863489c52" "1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" "183dfa34e360f5bc2ee4a6b3f4236e6664f4cfce40de1d43c984e0e8fc5b51ae" "92d350334df87fe61a682518ff214c773625c6d5ace8060d128adc550bc60c9b" default))
+   '("8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098"
+     "7964b513f8a2bb14803e717e0ac0123f100fb92160dcf4a467f530868ebaae3e"
+     "dccf4a8f1aaf5f24d2ab63af1aa75fd9d535c83377f8e26380162e888be0c6a9"
+     "ffafb0e9f63935183713b204c11d22225008559fa62133a69848835f4f4a758c"
+     "8acc884315a99229f565e130dba85c826f92605c0b3874a6a93abd27985731bf"
+     "683b3fe1689da78a4e64d3ddfce90f2c19eb2d8ab1bab1738a63d8263119c3f4"
+     "ff94bc11cb1ddef83cfdf87c2079b80182c00d50f42184c2a6f61de6773652e6"
+     "944d52450c57b7cbba08f9b3d08095eb7a5541b0ecfb3a0a9ecd4a18f3c28948"
+     "2e05569868dc11a52b08926b4c1a27da77580daa9321773d92822f7a639956ce"
+     "27b3336b6115451a340275d842de6e8b1c49ce0bba45210ed640902240f8961d"
+     "a44e2d1636a0114c5e407a748841f6723ed442dc3a0ed086542dc71b92a87aee"
+     "680f62b751481cc5b5b44aeab824e5683cf13792c006aeba1c25ce2d89826426"
+     "631c52620e2953e744f2b56d102eae503017047fb43d65ce028e88ef5846ea3b"
+     "b99e334a4019a2caa71e1d6445fc346c6f074a05fcbb989800ecbe54474ae1b0"
+     "251ed7ecd97af314cd77b07359a09da12dcd97be35e3ab761d4a92d8d8cf9a71"
+     "c37cf0c1e318ba0a40cb1d39902b4941b64c7063a0a7282a45f534185567841d"
+     "8e57da9e594e7eb3a67952a58098e300b2a3be8c7b24bdf5f5b770f0746f7fb5"
+     "8f13c9ecfd58bb55996d061680fe7f9cc67357910b78c71e28ffb14dd5bdd89c"
+     "8672c645e375c0f89575992c230f3f5ab5854b433c238ed871b59a88c8f1c602"
+     "98e35e087dccfdab62c3b5d3345bea78d892db3fd5a97b10c7caab59657fc342"
+     "6d11f1916de1a827e24b5c4b51ff17e40709e60a9e871d30d2d199fbd8bed0f6"
+     "2b474647799a29add7e3cf34cd9f8178e872f6a4f354f58f4e717d93a53a4eed"
+     "ec2c86933a6e0b96f68f71d4b39ebdd67b43b0b32091b7689acb9acdc2a3e03b"
+     "28cf1f7cc54ab4ee1ba4a4644046bd661941be92ef8327af56909f340cb9d3d5"
+     "64ca5a1381fa96cb86fd6c6b4d75b66dc9c4e0fc1288ee7d914ab8d2638e23a9"
+     "bdb0a37a078bc030ed685e0700b987d296d3473cfe5256c01577a65c67c6c330"
+     "aa6cba541dfa11f90338612befd7ce5af973c43d50e681f5451390abbcf83526"
+     "6b234feec8db588ad5ec2a9d9d7b935f7a155104b25ccfb94d921c45a2ff7d22"
+     "1bdc49116a77e52aaea740cd8e54b93e0bae6c0895dcc36d5c8d1a493e89c78d"
+     "2ed177de0dfc32a6a32d6109ddfd1782a61bcc23916b7b967fa212666d1aa95c"
+     "5912c255e7e46432d6c1c057a2124cce807ad4b901a99bc43e838db0754dff91"
+     "2b8dff32b9018d88e24044eb60d8f3829bd6bbeab754e70799b78593af1c3aba"
+     "51c71bb27bdab69b505d9bf71c99864051b37ac3de531d91fdad1598ad247138"
+     "5f128efd37c6a87cd4ad8e8b7f2afaba425425524a68133ac0efd87291d05874"
+     "7ea883b13485f175d3075c72fceab701b5bf76b2076f024da50dff4107d0db25"
+     "7e068da4ba88162324d9773ec066d93c447c76e9f4ae711ddd0c5d3863489c52"
+     "1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00"
+     "183dfa34e360f5bc2ee4a6b3f4236e6664f4cfce40de1d43c984e0e8fc5b51ae"
+     "92d350334df87fe61a682518ff214c773625c6d5ace8060d128adc550bc60c9b"
+     default))
+ '(elfeed-feeds
+   '("https://igor.mp/blog/atom"
+     "https://nivaldogmelo.github.io/posts/index.xml"
+     "https://www.phoronix.com/rss.php"))
  '(package-selected-packages
-   '(docker airline-themes eglot modus-themes yaml-mode use-package undo-tree treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil terraform-doc smartparens slime-company powerline-evil ob-go nginx-mode multi-vterm memoize lua-mode lsp-ui lsp-jedi jupyter helm-projectile graphql-mode go-projectile flycheck evil-org evil-collection elisp-format ein doom-themes dockerfile-mode company-terraform company-quickhelp-terminal company-nginx company-go company-ansible common-lisp-snippets all-the-icons adjust-parens)))
+   '(adjust-parens airline-themes all-the-icons arduino-cli-mode
+		   arduino-mode auto-package-update
+		   common-lisp-snippets company-ansible company-box
+		   company-go company-quickhelp-terminal
+		   company-terraform copilot copilot-chat dap-mode
+		   diminish docker dockerfile-mode doom-modeline
+		   doom-themes dotenv-mode ein elfeed-dashboard
+		   elfeed-goodies elfeed-summary elfeed-webkit
+		   elisp-format evil-collection evil-org evil-surround
+		   exec-path-from-shell feature-mode
+		   flycheck-popup-tip flycheck-pos-tip
+		   flycheck-posframe flycheck-projectile flycheck-vale
+		   gc-maybe go-projectile gptel graphql-mode
+		   helm-ls-git helm-lsp helm-projectile helm-xref
+		   iedit jupyter kele lsp-java lsp-jedi lsp-ui
+		   lua-mode macrostep magit-delta magit-todos
+		   markdown-preview-mode mcp modus-themes multi-vterm
+		   nerd-icons-dired nginx-mode nyan-mode ob-go origami
+		   pdf-tools powerline-evil projectile-git-autofetch
+		   quelpa-use-package rg rustic smartparens
+		   terraform-doc treemacs-evil treemacs-icons-dired
+		   treemacs-magit treemacs-nerd-icons
+		   treemacs-projectile undo-tree which-key yaml-mode
+		   yasnippet-snippets))
+ '(package-vc-selected-packages '((gc-maybe :url "https://github.com/bcardoso/gc-maybe/"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

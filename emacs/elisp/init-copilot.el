@@ -9,9 +9,6 @@
 ;; CopilotMode
 
 ;; Requirements
-(use-package
-  editorconfig
-  :ensure t)
 
 (use-package copilot
   :quelpa (copilot :fetcher github
@@ -53,7 +50,7 @@
 
 (defun custom/copilot-change-activation ()
   "Switch between three activation modes:
-- automatic: copilot will automatically overlay complations
+- automatic: copilot will automatically overlay completions
 - manual: you need to press a key (C-M-<return>) to trigger completions
 - off: copilot is completely disabled."
   (interactive)

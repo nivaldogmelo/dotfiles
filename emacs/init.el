@@ -6,7 +6,8 @@
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set up load path
+
+;; Required to load configs
 (defun update-load-path (folder)
   "Add FOLDER to the load path."
   (add-to-list 'load-path folder)
@@ -17,101 +18,48 @@
 		 (not (string-prefix-p ".." f)))
 	(update-load-path name)))))
 
+(setq user-emacs-directory (or (getenv "XDG_CONFIG_HOME") "~/.emacs.d/"))
 (update-load-path (expand-file-name "elisp" user-emacs-directory))
-(update-load-path (expand-file-name "custom-libs" user-emacs-directory))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GC ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Core ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package
-  gcmh
-  :ensure t
-  :config
-  (setq gcmh-high-cons-threshold (* 128 1000 1000))
-  (setq gcmh-verbose t)
-  (gcmh-mode 1))
+(require 'init-package)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Load ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'init-path)
 
-;; Package Management
-(require 'init-packages)
+(require 'init-server)
 
-;; Asynchronous processing
-(require 'init-async)
+(require 'init-internal)
 
-;; General Config
-(require 'init-general)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; General ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'init-rss)
+(require 'os)
 
-(require 'init-evil)
+(require 'qol)
 
-(require 'init-undo)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; System ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'init-helm)
+(require 'terminal)
 
-(require 'init-vterm)
+(require 'docker)
 
-(require 'init-tramp)
+(require 'git)
 
-;; UI
-(require 'init-ui)
+(require 'kubernetes)
 
-(require 'init-doomline)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Coding ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'init-theme)
+(require 'ide)
 
-;; Keybinds
-(require 'init-keybinds)
+(require 'hints)
 
-;; Text Editing
-(require 'init-org)
+(require 'lsp)
 
-(require 'init-markdown)
+(require 'assistant)
 
-;; General Programming
-(require 'init-programming)
+(require 'init-mcp)
 
-(require 'init-yasnippet)
-
-(require 'init-magit)
-
-(require 'init-projectile)
-
-(require 'init-treemacs)
-
-(require 'init-lsp)
-
-(require 'init-flycheck)
-
-(require 'init-company)
-
-(require 'init-copilot)
-
-;; Programming Languages
-
-(require 'init-elisp)
-
-(require 'init-go)
-
-(require 'init-rust)
-
-(require 'init-terraform)
-
-(require 'init-python)
-
-(require 'init-arduino)
-
-(require 'init-cpp)
-
-(require 'init-cl)
-
-(require 'init-docker)
-
-(require 'init-yaml)
-
-(require 'init-nginx)
-
-(require 'init-lua)
+(require 'langs)
 
 (provide 'init)
 ;;; init.el ends here
