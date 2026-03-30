@@ -45,8 +45,6 @@
 
 (require 'git)
 
-(require 'kubernetes)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Coding ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'ide)
