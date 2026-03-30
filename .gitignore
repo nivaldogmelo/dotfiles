@@ -1,0 +1,26 @@
+# Emacs files
+
+.backup/
+.cache/
+auto-save-list/
+backups/
+custom-libs/
+eclipse*
+eln*
+elpa/
+quelpa/
+request/
+themes/
+transient/
+tutorial/
+undo/
+url/
+cookies/
+session.*
+places
+projectile-bookmarks
+projectile.cache
+dap-ui-repl-*
+emacs/.*
+emacs/*~
+emacs/custom-vars.el
