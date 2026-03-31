@@ -55,8 +55,6 @@
 
 (require 'assistant)
 
-(require 'init-mcp)
-
 (require 'langs)
 
 (provide 'init)

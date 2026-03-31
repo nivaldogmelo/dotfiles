@@ -24,3 +24,4 @@ dap-ui-repl-*
 emacs/.*
 emacs/*~
 emacs/custom-vars.el
+*.eld
