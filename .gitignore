@@ -25,3 +25,5 @@ emacs/.*
 emacs/*~
 emacs/custom-vars.el
 *.eld
+.nosearch
+snippets/yasnippet-snippets/

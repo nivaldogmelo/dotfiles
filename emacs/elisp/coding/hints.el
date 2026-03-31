@@ -97,7 +97,7 @@
 	([(tab)] . smarter-yas-expand-next-field))
   :config
   (yas-reload-all)
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets/personal" "~/.emacs.d/snippets/yasnippet-snippets"))
   (defun smarter-yas-expand-next-field ()
     "Try to `yas-expand' and `yas-next-field' at current cursor position."
     (interactive)
