@@ -51,3 +51,6 @@
   :ensure t)
 ;; -Gitlab
 
+(provide 'git)
+;;; git.el ends here
+

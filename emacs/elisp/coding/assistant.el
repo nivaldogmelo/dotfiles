@@ -17,6 +17,7 @@
 
 (use-package copilot-chat
   :ensure t
+  :after copilot
   :config
   (setq copilot-chat-frontend 'org))
 
