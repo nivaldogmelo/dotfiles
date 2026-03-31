@@ -185,5 +185,12 @@
 (global-set-key (kbd "<f9>") 'evil-local-mode)
 ;; -ProgModeKeybinds
 
+;; ManipulateWindows
+(global-set-key (kbd "M-]") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-[") 'shrink-window-horizontally)
+(global-set-key (kbd "M-o") 'split-window-horizontally)
+;; -ManipulateWindows
+
+
 (provide 'qol)
 ;;; qol.el ends here

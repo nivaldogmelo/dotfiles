@@ -37,8 +37,17 @@
   :config
   (magit-todos-mode 1))
 
+;;; Search
+(use-package
+  magit-find-file
+  :after magit
+  :ensure t)
+
 ;; -Magit
 
+;; Gitlab
+(use-package
+  gitlab-pipeline
+  :ensure t)
+;; -Gitlab
 
-(provide 'git)
-;;; git.el ends here
