@@ -15,12 +15,6 @@
   :config
   (setq copilot-max-char -1))
 
-(use-package copilot-chat
-  :ensure t
-  :after copilot
-  :config
-  (setq copilot-chat-frontend 'org))
-
 (add-hook 'prog-mode-hook 'copilot-mode)
 ;; -PackageSettings
 
@@ -128,6 +122,23 @@ cleared, make sure the overlay doesn't come back too soon."
 
 (advice-add 'keyboard-quit :before #'custom/copilot-quit)
 ;; -CustomFunctions
+
+;; Eca
+(use-package eca
+  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest)
+  :bind (:map global-map
+	      ("C-c c"     . custom/eca-toggle-or-start)))
+
+(defun custom/eca-toggle-or-start ()
+  "Toggle ECA chat window if a session exists, otherwise start ECA.
+
+If ECA is not running this will call `eca' to initialize it." 
+  (interactive)
+  (if (ignore-errors (eca-session))
+      (eca-chat-toggle-window)
+    (call-interactively #'eca)))
+
+;; -Eca
 
 (provide 'assistant)
 ;;; assistant.el ends here

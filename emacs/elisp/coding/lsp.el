@@ -248,7 +248,7 @@
   (lsp-modeline-code-actions-segments '(count icon name))
   (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-prefer-flymake nil)
-  (read-process-output-max (* 1 1024 1024))
+  (read-process-output-max (* 4 1024 1024))
   (lsp-keep-workspace-alive nil)
   ;; (lsp-log-io t)
   (lsp-inlay-hint-enable t)
