@@ -5,9 +5,6 @@
 ;;
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Required to load configs
 (defun update-load-path (folder)
   "Add FOLDER to the load path."
   (add-to-list 'load-path folder)
@@ -20,12 +17,14 @@
 
 (setq user-emacs-directory (or (getenv "XDG_CONFIG_HOME") "~/.emacs.d/"))
 (update-load-path (expand-file-name "elisp" user-emacs-directory))
+(update-load-path (expand-file-name "custom-libs" user-emacs-directory))
+
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'no-message)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Core ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'init-package)
-
-(require 'init-path)
 
 (require 'init-server)
 
@@ -49,13 +48,14 @@
 
 (require 'ide)
 
-(require 'hints)
-
 (require 'lsp)
 
-(require 'assistant)
+(require 'hints)
 
 (require 'langs)
+
+(require 'ai)
+
 
 (provide 'init)
 ;;; init.el ends here

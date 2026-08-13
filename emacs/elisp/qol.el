@@ -7,7 +7,8 @@
 
 ;; KeybindsConfiguration
 
-(global-set-key (kbd "C-c k") 'kill-buffer-and-window)
+(bind-key "C-c C-k" 'kill-buffer-and-window)
+
 
 (use-package
   evil
@@ -16,20 +17,19 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-esc-delay 0)
-  :hook
-  (prog-mode . evil-local-mode)
   :bind
   ("C-i" . 'evil-normal-state)
-  ("<f9>" . 'evil-local-mode))
+  ("<f9>" . 'evil-local-mode)
+  :config
+  (evil-mode 1))
 
 (use-package
   evil-collection
+  :after evil
   :ensure t
-  :init (setq evil-collection-setup-minibuffer t))
-
-(when (not (display-graphic-p))
-  (global-set-key (kbd "C-c q") 'evil-normal-state)
-)
+  :config
+  (evil-collection-init))
+  ;; (setq evil-collection-setup-minibuffer t)
 ;; -KeybindsConfiguration
 
 ;; GeneralQOL
@@ -40,15 +40,9 @@
 ;;; MouseSupport
 (xterm-mouse-mode 1)
 
-(when (not (display-graphic-p))
-  (setq xterm-mouse-mode t)
-)
-
 ;;; Show possible keybindings
-(use-package
-  which-key
-  :ensure t)
-(which-key-mode)
+(which-key-mode 1)
+(which-key-setup-side-window-right-bottom)
 
 ;;; Hide unnecessary mode line indicators
 (use-package
@@ -56,16 +50,8 @@
   :ensure t)
 
 ;;; Undo Changes
-(use-package
-  undo-tree
-  :diminish unto-tree-mode
-  :init (global-undo-tree-mode)
-  :config
-  (evil-set-undo-system 'undo-tree)
-  :custom
-  (undo-tree-visualizer-diff t)
-  (undo-tree-history-directory-alist `(("." . ,(expand-file-name ".backup" user-emacs-directory))))
-  (undo-tree-visualizer-timestamps t))
+(use-package vundo
+    :ensure t)
 
 ;;; Autoclose Parens
 (use-package smartparens
@@ -81,10 +67,10 @@
   :config
   (global-evil-surround-mode 1))
 
-
 ;;; Display Line Numbers
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 (add-hook 'text-mode-hook (lambda () (display-line-numbers-mode 1)))
+(add-hook 'markdown-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 (defun my/display-set-relative ()
   (setq display-line-numbers 'relative))     ; or 'visual
@@ -95,6 +81,7 @@
 (add-hook 'evil-insert-state-entry-hook #'my/display-set-absolute)
 (add-hook 'evil-insert-state-exit-hook #'my/display-set-relative)
 
+;; C-; to trigger
 (use-package iedit
   :ensure t)
 
@@ -133,7 +120,9 @@
   :bind
   ("M-x" . helm-M-x) ;; Bind helm to execute-extended-command
   ("C-x C-f" . helm-find-files) ;; Bind helm to find-file
-  :config (helm-mode))
+  :config
+  (add-to-list 'helm-commands-using-frame 'helm-M-x)
+  (helm-mode))
 
 
 ;;; XRef integration
@@ -146,6 +135,7 @@
 (define-key global-map [remap find-file] #'helm-find-files)
 (define-key global-map [remap execute-extended-command] #'helm-M-x)
 (define-key global-map [remap switch-to-buffer] #'helm-mini)
+(define-key global-map [remap list-buffers] #'helm-buffers-list)
 ;; -Helm
 
 ;; LineMode
@@ -159,10 +149,11 @@
   (doom-modeline-indent-info nil)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-env-version t)
-  (doom-modeline-buffer-file-name-style 'relative-to-project)
+  ;; (doom-modeline-buffer-file-name-style 'auto)
+  (doom-modeline-buffer-file-name-style 'file-name-with-project)
   (doom-modeline-vcs-display-function #'doom-modeline-vcs-name)
   (doom-modeline-vcs-max-length 15)
-  (doom-modeline-height 20)
+  (doom-modeline-height 30)
   (doom-modeline-modal t)
   (doom-modeline-modal-modern-icon t))
 
@@ -181,16 +172,14 @@
 ;; -LineMode
 
 ;; ProgModeKeybinds
-(add-hook 'prog-mode-hook 'evil-local-mode)
-(global-set-key (kbd "<f9>") 'evil-local-mode)
+(bind-key "<f9>" 'evil-local-mode)
 ;; -ProgModeKeybinds
 
 ;; ManipulateWindows
-(global-set-key (kbd "M-]") 'enlarge-window-horizontally)
-(global-set-key (kbd "M-[") 'shrink-window-horizontally)
-(global-set-key (kbd "M-o") 'split-window-horizontally)
+(bind-key "M-]" 'enlarge-window-horizontally)
+(bind-key "M-[" 'shrink-window-horizontally)
+(bind-key "M-o" 'split-window-horizontally)
 ;; -ManipulateWindows
-
 
 (provide 'qol)
 ;;; qol.el ends here

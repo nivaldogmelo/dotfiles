@@ -1,11 +1,11 @@
-;;; assistant.el ---  -*- lexical-binding: t; -*-
+;;; ai.el ---  -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;; Emacs setup for copilot
 ;;
 ;;; Code:
 
-;; PackageSettings
+;; AutoComplete
 (use-package copilot
   :quelpa (copilot :fetcher github
 		   :repo "copilot-emacs/copilot.el"
@@ -16,9 +16,8 @@
   (setq copilot-max-char -1))
 
 (add-hook 'prog-mode-hook 'copilot-mode)
-;; -PackageSettings
 
-;; CustomFunctions
+;;; CustomFunctions
 
 ;;; Disable copilot in some modes
 (defun custom/no-copilot-mode ()
@@ -90,9 +89,8 @@ is available. Useful if you tend to hammer your keys like I do."
 	  (indent-for-tab-command)))))
 
 (defun custom/copilot-tab ()
-  "Tab command that will complete with copilot if a completion is
-available. Otherwise will try company, yasnippet or normal
-tab-indent."
+  "Tab command that will complete with copilot if a completion is available.
+Otherwise will try company, yasnippet or normal tab-indent."
   (interactive)
   (if (minibufferp)
       (minibuffer-complete))
@@ -105,8 +103,8 @@ tab-indent."
 (add-hook 'prog-mode-hook 'copilot-mode)
 
 (defun custom/copilot-quit ()
-  "Run `copilot-clear-overlay` or `keyboiard-quit`. If copilot is
-cleared, make sure the overlay doesn't come back too soon."
+  "Run `copilot-clear-overlay` or `keyboiard-quit`.
+If copilot is cleared, make sure the overlay doesn't come back too soon."
   (interactive)
   (condition-case err
       (when copilot--overlay
@@ -121,9 +119,9 @@ cleared, make sure the overlay doesn't come back too soon."
     (error handler)))
 
 (advice-add 'keyboard-quit :before #'custom/copilot-quit)
-;; -CustomFunctions
+;; -AutoComplete
 
-;; Eca
+;; Agent
 (use-package eca
   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest)
   :bind (:map global-map
@@ -131,14 +129,13 @@ cleared, make sure the overlay doesn't come back too soon."
 
 (defun custom/eca-toggle-or-start ()
   "Toggle ECA chat window if a session exists, otherwise start ECA.
-
-If ECA is not running this will call `eca' to initialize it." 
+If ECA is not running this will call `eca' to initialize it."
   (interactive)
   (if (ignore-errors (eca-session))
       (eca-chat-toggle-window)
     (call-interactively #'eca)))
 
-;; -Eca
+;; -Agent
 
-(provide 'assistant)
-;;; assistant.el ends here
+(provide 'ai)
+;;; ai.el ends here

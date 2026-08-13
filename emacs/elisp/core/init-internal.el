@@ -9,14 +9,6 @@
 ;; GC Setup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (use-package
-;;   gcmh
-;;   :ensure t
-;;   :config
-;;   (setq gcmh-high-cons-threshold (* 128 1000 1000))
-;;   (setq gcmh-verbose t)
-;;   (gcmh-mode 1))
-
 (use-package gc-maybe
   :vc (:url "https://github.com/bcardoso/gc-maybe/")
   :demand t

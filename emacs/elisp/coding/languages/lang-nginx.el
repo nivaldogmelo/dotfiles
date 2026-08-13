@@ -17,6 +17,7 @@
 	      (lsp-deferred))))
   ;; :command nginx-mode)
 
+;; pip install -U nginx-language-server
 (add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode))
 
 

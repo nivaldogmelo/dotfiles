@@ -11,8 +11,6 @@
 
 (require 'lang-go)
 
-(require 'lang-java)
-
 (require 'lang-nginx)
 
 (require 'lang-yaml)

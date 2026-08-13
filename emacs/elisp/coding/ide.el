@@ -9,25 +9,31 @@
 (use-package
   projectile
   :ensure t
-  :init (projectile-mode +1)
+  :init
+  (projectile-mode +1)
+  (setq projectile-project-search-path '("~/code/"))
+  (setq projectile-todo-keywords '("TODO" "FIXME" "HACK" "XXX" "BUG" "NOTE"))
   :bind (:map projectile-mode-map
 	      ("M-p" . projectile-command-map)
-	      ("C-c p" . projectile-command-map)))
-;;; Clean old projects
-;;; (projectile-cleanup-know-projects)
+	      ("M-p x t" . projectile-run-ghostel)
+	      ("C-c p" . projectile-command-map))
+  :config
+  (setq projectile-max-file-buffer-count 10)
+  (setq projectile-shell-backend 'ghostel)
+  (projectile-session-mode +1))
+
+
+;; Install fd
+
+;;; Groups configuration
+;; (setq projectile-project-groups
+;;       '(("myapp"  . ("~/src/myapp" "~/src/myapp-docs" "~/src/myapp-cli"))
+;;         ("infra"  . ("~/src/deploy" "~/src/terraform"))))
 
 ;;; HelmIntegration
 (use-package
   helm-projectile
   :ensure t)
-
-;;; Automatically fetch projects
-(use-package
-  projectile-git-autofetch
-  :init (projectile-git-autofetch-mode 1)
-  :custom
-  (projectile-git-autofetch-projects 'open))
-
 ;; -Projectile
 
 ;; Treemacs
@@ -83,6 +89,8 @@
 		  treemacs-width-is-initially-locked     t
 		  treemacs-workspace-switch-cleanup      nil)
 	    (treemacs-follow-mode t)
+	    ;; (treemacs-project-follow-mode t)
+	    (treemacs-indent-guide-mode t)
 	    (treemacs-filewatch-mode t)
 	    (treemacs-git-commit-diff-mode t)
 	    (treemacs-fringe-indicator-mode 'always)
@@ -131,35 +139,41 @@
   :ensure t
   :config (treemacs-icons-dired-mode))
 
-;;; Open current dir at Treemacs
-(defun my/treemacs-client-setup (frame)
-  "If a new client frame opens with a dired buffer (e.g. from `emacsclient -nc .`), open Treemacs."
-  (select-frame-set-input-focus frame)
-  (with-selected-frame frame
-    ;; Delay to allow frame/buffers to fully initialize
-    (run-at-time
-     "0.3 sec" nil
-     (lambda ()
-       (let* ((dired-buf
-	       (seq-find (lambda (buf)
-			   (with-current-buffer buf
-			     (and (eq major-mode 'dired-mode)
-				  (file-directory-p default-directory))))
-			 (buffer-list frame))))
-	 (if dired-buf
-	     (let* ((dir (with-current-buffer dired-buf default-directory))
-		    (dirname (file-name-nondirectory (directory-file-name dir))))
-	       (message "Dired buffer detected for directory: %s\nName: %s" dir dirname)
-	       ;; You could call treemacs, e.g.:
-	       (treemacs-add-and-display-current-project-exclusively)
-	       ;; (treemacs-add-project-to-workspace dir dirname)
-	       (treemacs-select-window)
-	       ;; (treemacs-add-and-display-current-project-exclusively)
-	       (kill-buffer dired-buf) ;; Optional: close dired buffer
-	       )
-	   (message "No dired buffer with a directory found in new frame.")))))))
+(use-package
+  treemacs-tab-bar
+  :after (treemacs)
+  :ensure t
+  :config (treemacs-set-scope-type 'Tabs))
 
-(add-hook 'after-make-frame-functions #'my/treemacs-client-setup)
+;; ;;; Open current dir at Treemacs
+;; (defun my/treemacs-client-setup (frame)
+;;   "If a new client frame opens with a dired buffer (e.g. from `emacsclient -nc .`), open Treemacs."
+;;   (select-frame-set-input-focus frame)
+;;   (with-selected-frame frame
+;;     ;; Delay to allow frame/buffers to fully initialize
+;;     (run-at-time
+;;      "0.3 sec" nil
+;;      (lambda ()
+;;        (let* ((dired-buf
+;;	       (seq-find (lambda (buf)
+;;			   (with-current-buffer buf
+;;			     (and (eq major-mode 'dired-mode)
+;;				  (file-directory-p default-directory))))
+;;			 (buffer-list frame))))
+;;	 (if dired-buf
+;;	     (let* ((dir (with-current-buffer dired-buf default-directory))
+;;		    (dirname (file-name-nondirectory (directory-file-name dir))))
+;;	       (message "Dired buffer detected for directory: %s\nName: %s" dir dirname)
+;;	       ;; You could call treemacs, e.g.:
+;;	       (treemacs-add-and-display-current-project-exclusively)
+;;	       ;; (treemacs-add-project-to-workspace dir dirname)
+;;	       (treemacs-select-window)
+;;	       ;; (treemacs-add-and-display-current-project-exclusively)
+;;	       (kill-buffer dired-buf) ;; Optional: close dired buffer
+;;	       )
+;;	   (message "No dired buffer with a directory found in new frame.")))))))
+
+;; (add-hook 'after-make-frame-functions #'my/treemacs-client-setup)
 ;; -Treemacs
 
 ;; GeneralSettings
@@ -172,6 +186,7 @@
 (use-package
   editorconfig
   :ensure t)
+
 ;; -GeneralSettings
 
 (provide 'ide)

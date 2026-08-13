@@ -31,7 +31,5 @@
 ;;; Debugger
 (require 'dap-dlv-go)
 
-
-
 (provide 'lang-go)
 ;;; lang-go.el ends here

@@ -15,11 +15,12 @@
       version-control t)
 ;; -BackupFiles
 
+;; AutoSaveFiles
+(setq auto-save-file-name-transforms `((".*" ,(expand-file-name "saves" user-emacs-directory) t)))
+;; -AutoSaveFiles
+
 
 ;; EnvSync
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
 (exec-path-from-shell-initialize)
 ;; -EnvSync
 

@@ -12,11 +12,12 @@
   :hook ((prog-mode) . company-mode)
   :custom
   (company-minimum-prefix-length 2)
-  (company-tooltip-align-annotations t)
-  (company-global-modes '(not shell-mode vterm-mode))
   (company-idle-delay 0.3)
+  (company-tooltip-align-annotations t)
+  (company-global-modes '(not shell-mode vterm-mode text-mode markdown-mode))
   (company-show-numbers t)
-  (company-tooltip-limit 20)
+  (company-tooltip-limit 10)
+  (company-show-quick-access 'left)
   :config
   (setq company-begin-commands '(self-insert-command)))
 
@@ -27,8 +28,8 @@
   :defines company-box-icons-all-the-icons
   :hook (company-mode . company-box-mode)
   :custom
-  (company-box-backends-colors nil)
-  (company-box-doc-delay 0.1)
+  ;; (company-box-backends-colors nil)
+  (company-box-doc-delay 0.5)
   (company-box-doc-frame-parameters '((internal-border-width . 1)
 				      (left-fringe . 3)
 				      (right-fringe . 3)))
@@ -201,7 +202,7 @@
 	  `((Unknown . ,(all-the-icons-material "find_in_page" :height 1.0 :v-adjust -0.2))
 			(Text . ,(all-the-icons-faicon "text-width" :height 1.0 :v-adjust -0.02))
 			(Method . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
-			(Function . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
+			(Function . ,(all-the-icons-material "functions" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
 			(Constructor . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
 			(Field . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
 			(Variable . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
@@ -239,20 +240,19 @@
     (push dir lsp-file-watch-ignored-directories))
   :commands (lsp lsp-deferred)
   :hook
-  (before-save-hook . lsp-format-buffer)
   (before-save-hook . lsp-organize-imports)
   :config
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
   :custom
+  (lsp-format-buffer-on-save t)
   (lsp-keymap-prefix "C-c l")
   (lsp-modeline-code-actions-segments '(count icon name))
-  (lsp-headerline-breadcrumb-segments '(project file symbols))
-  (lsp-prefer-flymake nil)
+  (lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (read-process-output-max (* 4 1024 1024))
   (lsp-keep-workspace-alive nil)
   ;; (lsp-log-io t)
   (lsp-inlay-hint-enable t)
-  (lsp-eldoc-render-all t))
+  (lsp-eldoc-render-all nil))
 
 (with-eval-after-load 'lsp-mode
   ;; :global/:workspace/:file
@@ -279,12 +279,6 @@
     (define-key evil-normal-state-map (kbd "gd") #'lsp-ui-peek-find-definitions)
     (define-key evil-normal-state-map (kbd "gr") #'lsp-ui-peek-find-references))
   :custom
-  (lsp-ui-doc-enable t)
-  (lsp-ui-doc-header t)
-  (lsp-ui-doc-border (face-foreground 'default))
-  (lsp-ui-doc-show-with-cursor t)
-  (lsp-ui-doc-show-with-mouse nil)
-  (lsp-ui-doc-position 'top)
   (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-show-code-actions t)
@@ -295,21 +289,60 @@
   (lsp-ui-peek-always-show t)
   (lsp-ui-peek-peek-height 50)
   (lsp-ui-peek-list-width 30)
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-border (face-foreground 'default))
+  (lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-ui-doc-position 'bottom)
   (lsp-ui-imenu-enable t))
 
 ;;; Treemacs Integration
+(defvar my/lsp-treemacs-errors-position-params
+  `((side . ,treemacs-position)
+    (slot . 2)
+    (window-width . ,treemacs-width))
+  "Make treemacs error list appear on treemacs buffer")
+
+(defun my/lsp-treemacs-errors-list ()
+  (interactive)
+  (setq lsp-treemacs--current-workspaces (lsp-workspaces))
+  (-if-let (buffer (get-buffer lsp-treemacs-errors-buffer-name))
+      (progn
+        (select-window (display-buffer-in-side-window buffer lsp-treemacs-symbols-position-params))
+        (lsp-treemacs-errors-list--refresh))
+    (let* ((buffer (lsp-treemacs-errors-list--refresh))
+           (window (display-buffer-in-side-window buffer lsp-treemacs-symbols-position-params)))
+      (select-window window)
+      (set-window-dedicated-p window t)
+      (lsp-treemacs-error-list-mode 1)
+
+      (add-hook 'lsp-diagnostics-updated-hook #'lsp-treemacs-errors-list--refresh)
+      (add-hook 'kill-buffer-hook 'lsp-treemacs--kill-buffer nil t)))
+
+  (let ((buf (lsp-treemacs-errors-list--refresh)))
+    (pop-to-buffer buf)
+    (with-current-buffer buf
+      (lsp-treemacs-error-list-mode 1))))
+
+
 (use-package lsp-treemacs
   :ensure t
   :after lsp-mode
   :bind
   :config
   ;; (lsp-treemacs-sync-mode 1)
+  :custom
+  (lsp-treemacs-error-position-params my/lsp-treemacs-errors-position-params)
   :bind
-  ("C-c l e" . lsp-treemacs-errors-list))
+  ("C-c l e" . my/lsp-treemacs-errors-list))
 
 ;;; Helm Integration
 (use-package helm-lsp
-  :ensure t)
+  :ensure t
+  :config
+  (with-eval-after-load 'evil
+    (define-key evil-normal-state-map (kbd "gs") #'helm-lsp-workspace-symbol)))
 
 ;;; LspBooster
 ;; First install with `cargo install emacs-lsp-booster`
@@ -348,8 +381,6 @@
 
 ;;; Debugger Configuration
 
-
-
 (use-package
   dap-mode
   :diminish
@@ -375,8 +406,6 @@
   ;; (dap-ui-controls-mode 1))
 
 (require 'dap-gdb)
-
-
  
 (provide 'lsp)
 ;;; lsp.el ends here
